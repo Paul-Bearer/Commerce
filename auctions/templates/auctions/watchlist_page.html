@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h1>{{ user.username }}'s Watchlist Page</h1>
+
+<div class="listing_row">
+    {% for row in watchlist_items %}
+    <div class="single_listing">                                        
+            <div>
+                <a href="{% url 'listing_page' id=row.item.id message='Detail' %}">
+                    <img src="{{row.item.photo}}" alt="{{row.item.title}}">
+                </a>
+            </div>
+            <div>
+                <p><strong>{{row.item.title}}</strong></p>
+                <p>{{row.item.description}}</p>
+                <p>${{row.item.starting_price}}</p>
+            </div>
+        </div> 
+    {%endfor%}
+</div>
+
+{% endblock %}
+
+
+
+

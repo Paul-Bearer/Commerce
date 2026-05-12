@@ -1,0 +1,99 @@
+body {
+    background-color: #f6f3eb;
+    padding: 10px;
+}
+
+.header {
+    background-color: #f4efe2;
+}
+.header a {
+    color: black;
+    font-family: Georgia;
+
+}
+.header a:hover {
+    text-decoration: underline;
+    color: #5b5b5c; /* Choose any color you'd like */
+}
+
+.top_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+
+.logos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo_left img {
+    width: 50%;
+    height: auto;
+}
+
+.logo_right img {
+    width: 75%;
+    height: auto;
+}
+
+/* start index.html */
+/* start index.html */
+/* start index.html */
+/* start index.html */
+
+.listing_row {
+    display: flex;
+    flex-direction: row;
+}
+
+.listing_row img {
+    width: 200px;
+    height: auto;
+    border-radius: 20px;
+}
+
+.single_listing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.listing_group {
+    display: flex;
+    flex-direction: row;
+}
+
+/* comment section */
+/* comment section */
+/* comment section */
+/* comment section */
+/* comment section */
+
+
+.whole_comment {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.enter_comment {
+    width: auto;
+    padding-bottom: 20px;
+
+}
+
+.view_comments {
+    padding: 20px;
+    border: .5px solid black;
+}
+
+.list_comments {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px 20px 40px;
+    border: 2px solid black;
+
+}

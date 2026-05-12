@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Create Listing</h2>
+
+<form method="POST" action="{% url 'create_listing' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" placeholder="Enter Title" name="title">
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" placeholder="Enter Description" name="description"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="bid" class="form-label">Bid</label>
+        <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <span class="input-group-text">0.00</span>
+        <input type="number" name="bid" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" id="bid" placeholder="Place Bid">
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select class="form-control" id="category" name="category">
+            <option value="Portrait">Portrait</option>
+            <option value="Scenery">Scenery</option>
+            <option value="Abstract">Abstract</option>
+            <option value="Animal">Animal</option>
+            <option value="Fantasy">Fantasy</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="image_url" class="form-label">Image URL</label>
+        <textarea class="form-control" id="image_url" placeholder="Enter Image URL" name="image_url"></textarea>
+    </div>
+    <input type="submit">
+</form>
+
+{% endblock %}

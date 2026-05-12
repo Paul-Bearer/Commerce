@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% if flag == "ACTIVE" %}
+    <div>
+        <h2>Active Listings</h2>
+    </div>
+{% else %}
+    <div>
+        <h2>Inactive Listings</h2>
+    </div>
+{% endif %}
+
+<div>
+    <form method="POST" action="{% url 'category' %}">
+        {% csrf_token %}
+        <label>Choose a category: </label>
+        <select name="choose_category" id="choose_category">
+            <option value="">--Select--</option>
+            <option value="Portrait">Portrait</option>
+            <option value="Scenery">Scenery</option>
+            <option value="Abstract">Abstract</option>
+            <option value="Animal">Animal</option>
+            <option value="Fantasy">Fantasy</option>
+        </select>
+        <input type="submit">
+    </form>
+</div>
+
+<div class="listing_row">
+    {% for i in active_listings %}
+    <div class="single_listing">
+        <div>
+            <a href="{% url 'listing_page' id=i.id message='Detail' %}">
+                <img src="{{i.photo}}" alt="{{i.title}}">
+            </a>
+        </div>
+        <div>
+            <p><strong>{{i.title}}</strong></p>
+            <p>{{i.description}}</p>
+            <p>${{i.starting_price}}</p>
+        </div>
+    </div>    
+    {% endfor %}
+    
+</div> 
+
+{% endblock %}

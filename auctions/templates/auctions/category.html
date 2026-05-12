@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h1>Filter By Category</h1>
+
+
+<div class="listing_row">
+    {% for i in filtered_rows %}
+    <div class="single_listing">                                        
+            <!-- I copied this portion and down from index.html, is there a better way? -->
+            <div>
+                <a href="{% url 'listing_page' id=i.id message='Detail' %}">
+                    <img src="{{i.photo}}" alt="{{i.title}}">
+                </a>
+            </div>
+            <div>
+                <p><strong>{{i.title}}</strong></p>
+                <p>{{i.description}}</p>
+                <p>${{i.starting_price}}</p>
+            </div>
+        </div> 
+    {%endfor%}
+</div>
+
+
+
+{% endblock %}
+

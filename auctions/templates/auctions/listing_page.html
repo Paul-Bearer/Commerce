@@ -1,0 +1,166 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+{% if active == False %}
+    <div class="alert alert-danger" role="alert">
+        This listing is no longer active
+    </div>
+{% endif %}
+
+
+
+
+ <div>
+
+ </div>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check-circle-fill" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+  </symbol>
+  <symbol id="info-fill" viewBox="0 0 16 16">
+    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+  </symbol>
+  <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  </symbol>
+</svg>
+
+{% if message == "Failure" %}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+    <div>
+        <!-- right now im displaying starting price, but it should be current_bid -->
+        <h1>Bid must be higher than {{last_bid_amount}}</h1>
+    </div>
+    </div>
+{% endif %}
+
+
+{% if message == "Success" %}
+    <div class="alert alert-success d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+        <div>
+            <h1>Bid successful</h1>
+        </div>
+    </div>
+{% endif %}
+
+
+<div class="listing_group">
+    <div class="listing_img">
+        <img src="{{photo}}" alt="{{title}}">
+    </div>
+
+    <div class="listing_text_info">
+        <div class="listing_title">
+            <h2>{{title}}</h2>
+        </div>
+
+        <div class="listing_price">
+            <h3><strong>Starting Price: ${{starting_price}}</strong></h3>
+        </div>
+        <div class="listing_price">
+            {% if last_bid_amount == "No Current Bids" %}
+                <h3><strong>Current Price: {{last_bid_amount}}</strong></h3>
+            {% else %}
+                <h3><strong>Current Price: ${{last_bid_amount}} by: {{ last_bid_user }}</strong></h3>
+            {% endif %}
+        </div>
+
+        <div class="listing_description">
+            <h3>{{description}}</h3>
+            <h3>Seller: {{owner}}</h3>
+        </div>
+        {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'add_bid' %}">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{id}}">
+                <input type="number" name="new_bid" placeholder="Place Bid">
+                <input type="submit">
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+
+    {% if user.is_authenticated %}
+    <div>
+        <form method="POST" action="{% url 'add_watchlist' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{id}}">
+            <input type="submit" value="Add to Watchlist" style="{% if id in watchlist %} display:none {% endif %}">
+            
+        </form>
+    </div>
+
+
+    <div>
+        <form method="POST" action="{% url 'delete_watchlist' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{id}}">
+            <input type="submit" value="Delete From Watchlist" style="{% if id not in watchlist %} display:none {% else %} display:block {% endif %}">
+            
+        </form>
+    </div>
+    {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+<div class="whole_comment">
+    {% if user.is_authenticated %}
+        <div class="enter_comment">
+            <form method="POST" action="{% url 'add_comment' %}">
+                {% csrf_token %}
+                <input type="text" name="comment" placeholder="Enter comment here!">
+                <input type="hidden" name="id" value="{{id}}">
+                <input type="submit">
+            </form>
+        </div>
+    {% endif %}
+
+    <div class="view_comments">
+
+        {% for i in selected_comments %}
+            <div class="list_comments">
+                    <div class="user">
+                        {{ i.user }}
+                    </div>
+                    <div class="comment">
+                        {{ i.comment }}
+                    </div>
+                    <div class="date_time">
+                        {{ i.date_time }}
+                    </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% if user.is_authenticated %}
+    {% if owner == user and active == True %}
+        <!-- You can see this line even when the listing is closed -->
+        <a href="{% url 'close_listing' id=id %}">Close Listing</a>
+    {% endif %}
+    {% if user == last_bid_user and active == False %}
+        <div class="alert alert-success" role="alert">
+            <p>Congrats {{last_bid_user}}</p>
+        </div>
+    {% endif %}
+{% endif %}
+
+
+{% endblock %}
